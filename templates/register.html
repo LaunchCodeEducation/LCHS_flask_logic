@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section>
+    <h2>Fake Registration Form</h2>
+    <form action="/" method="POST">
+        {% for (label, attributes) in inputs.items() %}
+            <label>{{label}}: <input type="{{attributes[0]}}" name="{{attributes[1]}}" placeholder="{{attributes[2]}}" required /></label>
+        {% endfor %}
+        <section>
+            <button>Submit</button>
+        </section>
+    </form>
+</section>
+{% endblock %}

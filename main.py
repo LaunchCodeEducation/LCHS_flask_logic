@@ -1,51 +1,61 @@
-from flask import Flask, render_template, request
-import random
+from flask import Flask, render_template, request, redirect
+import string
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
-images = ['grid_0.png', 'grid_1.png', 'grid_2.png', 'grid_3.png', 'grid_4.png',
-    'grid_5.png', 'grid_6.png', 'grid_7.png', 'grid_8.png']
+def check_inputs(name, pwd, check, form_info):
+    valid_name = check_username(name, form_info)
+    valid_password = check_password(pwd, form_info)
+    valid_match = valid_password and check_confirm(check, pwd, form_info)
+    return valid_name and valid_password and valid_match
 
-def fill_choices(index):
-    options = {}
-    if index in [1, 2, 4, 5, 7, 8]:
-        options['Left'] = index-1
-    elif index == 3:
-        options['Left'] = 5
-    if index in [0, 1, 3, 4, 6, 7]:
-        options['Right'] = index+1
-    elif index == 5:
-        options['Right'] = 3
-    if index in [1, 3, 4, 5, 6, 7, 8]:
-        options['Up'] = (index-3)%9
-    if index in [0, 1, 2, 3, 4, 5, 7]:
-        options['Down'] = (index+3)%9
-    return options
+def check_username(name, form_info):
+    return 3 <= len(name) <= 8 and ' ' not in name
+
+def check_password(pwd, form_info):
+    special_char = letter = digit = False
+    if len(pwd) < 8 or ' ' in pwd:
+        return False
+
+    for char in pwd:
+        if char in string.ascii_letters:
+            letter = True
+        if char in string.digits:
+            digit = True
+        if char in ['%', '#', '&', '*']:
+            special_char = True
+    
+    return letter and digit and special_char
+
+def check_confirm(check, pwd, form_info):
+    return check == pwd
 
 @app.route('/', methods=['GET', 'POST'])
-def show_grid():
-    if request.method == 'POST':
-        # Collect the user's direction choice from the form.
-        choice = int(request.form['choice'])
-        # Add the number of the new box to the 'steps' string.
-        steps = f"{request.form['steps']}-{choice}"
-        # Assign the new image title.
-        image = images[choice]
-        # Determine which direction choices belong with the new box.
-        choices = fill_choices(choice)
-    else:
-        # Randomly select a starting grid image.
-        image = random.choice(images)
-        # Determine which direction choices belong with the highlighted box.
-        choices = fill_choices(images.index(image))
-        # Assign the number of the highlighted box to the 'steps' string.
-        steps = str(images.index(image))
+def registration():
+    inputs = {
+        # Label: [type, name, placeholder]
+        'Username': ['text', 'username', '3-8 characters, no spaces'],
+        'Password': ['password', 'password','8 or more characters, no spaces'],
+        'Confirm Password': ['password', 'confirm', 'Retype password']
+    }
+    if request.method == "POST":
+        username = request.form['username']
+        password = request.form['password']
+        confirm = request.form['confirm']
+        if check_inputs(username, password, confirm, inputs):
+            return redirect('/success')
 
-    tab_title = "Flask Exercises"
-    page_title = "Move Around A Grid"
-    return render_template('grid.html', tab_title=tab_title, page_title=page_title,
-        choices=choices, image=image, steps=steps)
+    tab_title = "Flask Project"
+    page_title = "Improve Form UX"
+    return render_template('register.html', tab_title=tab_title, page_title=page_title,
+        inputs=inputs)
+
+@app.route('/success', methods=['GET', 'POST'])
+def success():
+    tab_title = "Flask Project"
+    page_title = "Success!"
+    return render_template('success.html', tab_title=tab_title, page_title=page_title)
 
 if __name__ == '__main__':
     app.run()

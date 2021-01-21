@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "flask-env/bin/python"
+    "python.pythonPath": "flask-env/bin/python",
+    "restructuredtext.languageServer.disabled": true
 }

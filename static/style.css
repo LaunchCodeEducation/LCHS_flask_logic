@@ -1,75 +1,57 @@
 body {
     font-size: 14pt;
+    background-color: yellow;
 }
 
 form {
     margin: 10px;
     padding: 4px;
+    width: 40%;
+    display: inline-block;
+    text-align: left;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 8px;
+    box-shadow: 5px 10px 6px lightgray;
 }
 
 label {
     margin: 5px;
-    padding: 5px;
-    font-size: 14pt;
+    font-size: 10pt;
     display: block;
 }
 
 input {
     margin: 10px;
-    padding: 5px;
+    font-size: 8pt;
+    width: 50%;
 }
 
 h2, h3 {
-    text-align: center;
     text-decoration: underline;
     margin: 10px;
 }
 
 button {
     margin: 5px;
-    background-color: green;
-    color: white;
-    font-size: 14pt;
-    border-radius: 4px;
-}
-
-button.restart {
-    background-color: red;
 }
 
 .centered {
     text-align: center;
 }
 
-li, p {
+p {
     margin: 5px;
 }
 
 .head-background {
     padding: 10px 0;
     text-align: center;
-    background-image: linear-gradient(to right, #419f6a, #3c79b8);
+    background-image: linear-gradient(to right, red,orange,yellow,green,blue,indigo,violet); 
     border-radius: 8px;
 }
 
-.grid_image {
-    display: inline-block;
-    text-align: center;
-    margin: 10px;
-    padding: 10px 0px;
-    width: 50%;
-    border: black solid 1px;
-    vertical-align: middle;
-}
-
-.choice_form {
-    display: inline-block;
-    text-align: left;
-    width: 40%;
-    vertical-align: top;
-    margin: 10px;
-}
-
-.responsive {
-    width: 90%;
+.error {
+    color: red;
+    margin-left: 20px;
 }
